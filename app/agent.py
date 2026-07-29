@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
-
+from formatter import json_reply
 from prompts import SYSTEM_PROMPT
 from executor import run_python
 
@@ -69,4 +69,4 @@ class DataAnalystAgent:
         if not execution["success"]:
             return execution["stderr"]
 
-        return str(execution["stdout"])
+        return json_reply({"answer": execution["stdout"]})
