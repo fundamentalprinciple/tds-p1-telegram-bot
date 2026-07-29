@@ -1,5 +1,5 @@
 import os
-
+from prompts import SYSTEM_PROMPT, FINAL_JSON_PROMPT
 from dotenv import load_dotenv
 from openai import OpenAI
 from formatter import json_reply
@@ -62,6 +62,20 @@ class DataAnalystAgent:
 
         return code
 
+    def format_reply(self, chat_id, question, python_output):
+        messages = [
+            {"role": "system", "content": FINAL_JSON_PROMPT},
+            {"role": "user", "content": f"Question:\n{question}\n\nPython output:\n{python_output}"}
+        ]
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+        )
+
+        return response.choices[0].message.content    
+
+
     def reply(self, chat_id, question):
         code = self.generate_python(chat_id, question)
         execution = run_python(code)
@@ -69,4 +83,8 @@ class DataAnalystAgent:
         if not execution["success"]:
             return execution["stderr"]
 
-        return json_reply({"answer": execution["stdout"]})
+        return self.format_reply(
+            chat_id,
+            question,
+            execution["stdout"]
+        )
