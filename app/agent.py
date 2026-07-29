@@ -1,3 +1,4 @@
+from utils import strip_code_fences
 import os
 from prompts import SYSTEM_PROMPT, FINAL_JSON_PROMPT
 from dotenv import load_dotenv
@@ -60,7 +61,7 @@ class DataAnalystAgent:
 
         self.add_assistant_message(chat_id, code)
 
-        return code
+        return strip_code_fences(response.choices[0].message.content)
 
     def format_reply(self, chat_id, question, python_output):
         messages = [
