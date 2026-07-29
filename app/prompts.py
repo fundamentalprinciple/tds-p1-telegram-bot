@@ -19,3 +19,16 @@ Rules:
 - If the data is CSV, load it with pandas.
 - You may print intermediate values for debugging.
 """
+
+FINAL_JSON_PROMPT = """
+You are given:
+1. The user's question.
+2. The result produced by Python.
+
+Reply with EXACTLY one valid JSON object matching what the user requested.
+
+Rules:
+- Output only JSON.
+- No markdown.
+- No explanations.
+"""
