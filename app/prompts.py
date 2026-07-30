@@ -15,8 +15,8 @@ Rules:
     - duckdb
     - json
     - math
-- If a URL is given, download it with requests.
-- If the data is CSV, load it with pandas.
+- If a URL is provided, use download(url) from dataset.py.
+- If you download a dataset, load it with load(path) from dataset.py.
 - You may print intermediate values for debugging.
 """
 

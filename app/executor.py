@@ -4,13 +4,22 @@ from pathlib import Path
 import io
 import contextlib
 import traceback
+from dataset import download, load
+from pathlib import Path
+
+app_dir = Path(__file__).parent.resolve()
 
 def run_python(code: str):
     code += "\n\ntry:\n    print(result)\nexcept NameError:\n    pass\n"
 
     with tempfile.TemporaryDirectory() as tmp:
         script = Path(tmp) / "script.py"
-        script.write_text(code)
+        script.write_text(
+            f"import sys\nsys.path.insert(0, {repr(str(app_dir))})\n"
+            "from dataset import download, load\n\n"
+            + code
+            + "\n\ntry:\n    print(result)\nexcept NameError:\n    pass\n"
+        )
 
         try:
             result = subprocess.run(
@@ -18,6 +27,7 @@ def run_python(code: str):
                 capture_output=True,
                 text=True,
                 timeout=30,
+                cwd=Path(__file__).parent,
             )
 
             return {
