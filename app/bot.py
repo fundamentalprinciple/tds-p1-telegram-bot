@@ -49,7 +49,11 @@ async def echo(update, context):
 
     chat_id = update.effective_chat.id
 
-    reply = agent.reply(chat_id, prompt)
+    reply = agent.reply(
+        chat_id,
+        prompt,
+        image_path=path if update.message.photo else None,
+    )
     
     print(reply)
     await update.message.reply_text(reply)

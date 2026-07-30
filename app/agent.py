@@ -1,3 +1,4 @@
+import base64
 from utils import strip_code_fences
 import os
 from prompts import SYSTEM_PROMPT, FINAL_JSON_PROMPT
@@ -90,9 +91,10 @@ class DataAnalystAgent:
 
         return response.choices[0].message.content    
 
-
-    def reply(self, chat_id, question):
+    def reply(self, chat_id, question, image_path=None):
         state = self.get_state(chat_id)
+        if image_path:
+            return self.describe_image(question, image_path)
         code = self.generate_python(
             chat_id,
             f"Previous state:\n{state}\n\nUser request:\n{question}"
@@ -124,3 +126,26 @@ class DataAnalystAgent:
         )
 
         return response
+
+
+    def describe_image(self, question, image_path):
+        with open(image_path, "rb") as f:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": question},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{base64.b64encode(f.read()).decode()}"
+                                },
+                            },
+                        ],
+                    }
+                ],
+            )
+
+        return response.choices[0].message.content
