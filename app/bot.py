@@ -47,12 +47,21 @@ async def echo(update, context):
 
         prompt += f"\n\nAttached image: {path}"
 
+    if update.message.voice:
+        file = await update.message.voice.get_file()
+        path = "data/voice.ogg"
+        await file.download_to_drive(path)
+
+        prompt += f"\n\nAttached audio: {path}"
+
+
     chat_id = update.effective_chat.id
 
     reply = agent.reply(
         chat_id,
         prompt,
         image_path=path if update.message.photo else None,
+        audio_path=audio_path if update.message.voice else None,
     )
     
     print(reply)
@@ -64,7 +73,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(
         MessageHandler(
-            (filters.TEXT | filters.Document.ALL | filters.PHOTO) & ~filters.COMMAND,
+            (filters.TEXT | filters.Document.ALL | filters.PHOTO | filters.VOICE) & ~filters.COMMAND,
             echo,
         )
     )

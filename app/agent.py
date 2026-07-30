@@ -91,7 +91,7 @@ class DataAnalystAgent:
 
         return response.choices[0].message.content    
 
-    def reply(self, chat_id, question, image_path=None):
+    def reply(self, chat_id, question, image_path=None, audio_path=None):
         state = self.get_state(chat_id)
         if image_path:
             return self.describe_image(question, image_path)
