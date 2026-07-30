@@ -86,7 +86,11 @@ class DataAnalystAgent:
 
 
     def reply(self, chat_id, question):
-        code = self.generate_python(chat_id, question)
+        state = self.get_state(chat_id)
+        code = self.generate_python(
+            chat_id,
+            f"Previous state:\n{state}\n\nUser request:\n{question}"
+        )
         execution = run_python(code)
 
         if not execution["success"]:

@@ -18,6 +18,7 @@ Rules:
 - If a URL is provided, use download(url) from dataset.py.
 - If you download a dataset, load it with load(path) from dataset.py.
 - You may print intermediate values for debugging.
+- If previous files have already been downloaded, reuse them instead of downloading again.
 """
 
 FINAL_JSON_PROMPT = """
