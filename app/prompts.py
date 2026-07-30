@@ -7,7 +7,13 @@ Rules:
 - Output ONLY valid Python code.
 - Do not use markdown.
 - Do not use ``` fences.
-- Store the final answer in a variable named `result`.
+
+- The variable `result` must contain ONLY the final answer to the user's question.
+- Never store an entire DataFrame in `result`.
+- If the question asks for a count, result must be an integer.
+- If the question asks for a list, result must be that list.
+- If the question asks for a single value, result must be that value only.
+
 - You may use:
     - pandas
     - numpy
@@ -19,6 +25,10 @@ Rules:
 - If you download a dataset, load it with load(path) from dataset.py.
 - You may print intermediate values for debugging.
 - If previous files have already been downloaded, reuse them instead of downloading again.
+- Solve ONLY the user's requested task.
+- Do not generate dataset summaries unless explicitly requested.
+- Read only the data needed to answer the question.
+- Keep the result as small as possible.
 """
 
 FINAL_JSON_PROMPT = """

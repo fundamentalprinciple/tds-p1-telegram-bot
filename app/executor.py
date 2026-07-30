@@ -23,7 +23,7 @@ def run_python(code: str):
             capture_output=True,
             text=True,
             timeout=30,
-            cwd=workdir,
+            cwd=app_dir,
         )
 
         return {

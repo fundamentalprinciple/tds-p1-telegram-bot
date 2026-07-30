@@ -60,9 +60,15 @@ class DataAnalystAgent:
     def generate_python(self, chat_id, question):
         self.add_user_message(chat_id, question)
 
+        print("=" * 80)
+        print(question)
+        print("=" * 80)
         response = self.client.chat.completions.create(
             model=self.model,
-            messages=self.get_messages(chat_id),
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": question},
+            ],
         )
 
         code = response.choices[0].message.content.strip()
@@ -91,6 +97,9 @@ class DataAnalystAgent:
             chat_id,
             f"Previous state:\n{state}\n\nUser request:\n{question}"
         )
+        print("=" * 80)
+        print(code)
+        print("=" * 80)
         execution = run_python(code)
         self.set_state(chat_id, "last_code", code)
         self.set_state(chat_id, "last_execution", execution)
