@@ -93,7 +93,7 @@ class DataAnalystAgent:
         )
         execution = run_python(code)
         self.set_state(chat_id, "last_code", code)
-        self.set_state(chat_id, "last_workdir", execution["workdir"])
+        self.set_state(chat_id, "last_execution", execution)
 
 
         if not execution["success"]:
