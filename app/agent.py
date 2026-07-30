@@ -11,6 +11,7 @@ load_dotenv()
 
 class DataAnalystAgent:
     def __init__(self):
+        self.state = {}
         self.client = OpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
             base_url=os.getenv("OPENAI_BASE_URL"),
@@ -18,6 +19,14 @@ class DataAnalystAgent:
 
         self.model = os.getenv("OPENAI_MODEL")
         self.conversations = {}
+    
+    def get_state(self, chat_id):
+        if chat_id not in self.state:
+            self.state[chat_id] = {}
+        return self.state[chat_id]
+
+    def set_state(self, chat_id, key, value):
+        self.get_state(chat_id)[key] = value
 
     def get_messages(self, chat_id):
         if chat_id not in self.conversations:
