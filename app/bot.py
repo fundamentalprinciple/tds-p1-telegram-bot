@@ -38,6 +38,15 @@ async def echo(update, context):
 
         prompt += f"\n\nAttached file: {path}"
 
+    if update.message.photo:
+        print("Received photo")
+        photo = update.message.photo[-1]
+        file = await photo.get_file()
+        path = "data/image.jpg"
+        await file.download_to_drive(path)
+
+        prompt += f"\n\nAttached image: {path}"
+
     chat_id = update.effective_chat.id
 
     reply = agent.reply(chat_id, prompt)
@@ -51,7 +60,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(
         MessageHandler(
-            (filters.TEXT | filters.Document.ALL) & ~filters.COMMAND, 
+            (filters.TEXT | filters.Document.ALL | filters.PHOTO) & ~filters.COMMAND,
             echo,
         )
     )

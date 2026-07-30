@@ -13,6 +13,7 @@ Rules:
 - If the question asks for a count, result must be an integer.
 - If the question asks for a list, result must be that list.
 - If the question asks for a single value, result must be that value only.
+- If an attached image is mentioned, use Python to inspect it if needed.
 
 - You may use:
     - pandas
