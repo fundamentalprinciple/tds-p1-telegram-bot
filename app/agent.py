@@ -92,6 +92,9 @@ class DataAnalystAgent:
             f"Previous state:\n{state}\n\nUser request:\n{question}"
         )
         execution = run_python(code)
+        self.set_state(chat_id, "last_code", code)
+        self.set_state(chat_id, "last_workdir", execution["workdir"])
+
 
         if not execution["success"]:
             response = execution["stderr"]
