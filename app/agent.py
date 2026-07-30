@@ -3,9 +3,8 @@ import os
 from prompts import SYSTEM_PROMPT, FINAL_JSON_PROMPT
 from dotenv import load_dotenv
 from openai import OpenAI
-from formatter import json_reply
-from prompts import SYSTEM_PROMPT
 from executor import run_python
+from logger import log_interaction
 
 load_dotenv()
 
@@ -82,10 +81,21 @@ class DataAnalystAgent:
         execution = run_python(code)
 
         if not execution["success"]:
-            return execution["stderr"]
+            response = execution["stderr"]
+        else:
+            response = self.format_reply(
+                chat_id,
+                question,
+                execution["stdout"]
+            )
 
-        return self.format_reply(
+        log_interaction(
             chat_id,
             question,
-            execution["stdout"]
+            response,
+            code,
+            execution["stdout"],
+            execution["stderr"],
         )
+
+        return response

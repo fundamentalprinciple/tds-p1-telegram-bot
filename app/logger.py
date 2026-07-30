@@ -8,13 +8,14 @@ LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "requests.jsonl"
 
 
-def log_interaction(user_id, username, prompt, response):
+def log_interaction(chat_id, question, response, code=None, stdout=None, stderr=None):
     entry = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "user_id": user_id,
-        "username": username,
-        "prompt": prompt,
+        "chat_id": chat_id,
+        "question": question,
         "response": response,
+        "code": code,
+        "stdout": stdout,
+        "stderr": stderr,
     }
 
     with open(LOG_FILE, "a", encoding="utf-8") as f:

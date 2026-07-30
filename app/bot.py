@@ -29,13 +29,6 @@ async def echo(update, context):
 
     reply = agent.reply(chat_id, prompt)
 
-    log_interaction(
-        user_id=update.effective_user.id,
-        username=update.effective_user.username,
-        prompt=prompt,
-        response=reply,
-    )
-
     await update.message.reply_text(reply)
 
 def main():
