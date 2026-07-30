@@ -1,6 +1,3 @@
-from executor import run_python
+from dataset import download
 
-print(run_python("""
-print("Hello")
-print(2 + 2)
-"""))
+print(download("https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"))

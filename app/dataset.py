@@ -1,22 +1,29 @@
-import pandas as pd
 import requests
+import pandas as pd
 from pathlib import Path
 
 
-DATA_DIR = Path("data")
-DATA_DIR.mkdir(exist_ok=True)
+def download(url: str, directory="data"):
+    Path(directory).mkdir(exist_ok=True)
+
+    filename = url.split("/")[-1]
+    path = Path(directory) / filename
+
+    r = requests.get(url, timeout=30)
+    r.raise_for_status()
+
+    path.write_bytes(r.content)
+    return str(path)
 
 
-def download_csv(url: str) -> Path:
-    filename = DATA_DIR / url.split("/")[-1]
+def load(path: str):
+    if path.endswith(".csv"):
+        return pd.read_csv(path)
 
-    response = requests.get(url, timeout=60)
-    response.raise_for_status()
+    if path.endswith(".json"):
+        return pd.read_json(path)
 
-    filename.write_bytes(response.content)
+    if path.endswith(".xlsx"):
+        return pd.read_excel(path)
 
-    return filename
-
-
-def load_csv(path: Path):
-    return pd.read_csv(path)
+    raise ValueError(f"Unsupported file type: {path}")
