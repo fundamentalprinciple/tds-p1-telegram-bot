@@ -1,3 +1,5 @@
+import json
+from formatter import format_reply
 import base64
 from utils import strip_code_fences
 import os
@@ -125,7 +127,8 @@ class DataAnalystAgent:
             execution["stderr"],
         )
 
-        return response
+        answer = json.loads(response)["answer"]
+        return format_reply(answer)
 
 
     def describe_image(self, question, image_path):
